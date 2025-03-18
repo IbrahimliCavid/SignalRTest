@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Features.Queries.Notification
+namespace Application.Features.Queries.Notification.GetUnreadNotification
 {
     public class GetUnreadNotificationQueryRequest : IRequest<GetUnreadNotificationQueryResponse>
     {

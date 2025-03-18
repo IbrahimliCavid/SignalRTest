@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Queries.Notification
+namespace Application.Features.Queries.Notification.GetUnreadNotification
 {
     public class GetUnreadNotificationQueryHandler : IRequestHandler<GetUnreadNotificationQueryRequest, GetUnreadNotificationQueryResponse>
     {
@@ -22,13 +22,13 @@ namespace Application.Features.Queries.Notification
         {
             var unreadNotifications = new List<GetNotificationDto>();
             if (request.Ids == null)
-                 unreadNotifications = await _notificationService.GetUnreadNotifications(new());
+                unreadNotifications = await _notificationService.GetUnreadNotifications(new());
             else
             {
                 await _notificationService.MarkMessagesAsReadAsync(request.Ids);
-                 unreadNotifications = await _notificationService.GetUnreadNotifications(request.Ids);
+                unreadNotifications = await _notificationService.GetUnreadNotifications(request.Ids);
             }
-          
+
             int count = unreadNotifications.Count;
 
             return new GetUnreadNotificationQueryResponse()
@@ -36,7 +36,7 @@ namespace Application.Features.Queries.Notification
                 Count = unreadNotifications.Count,
                 Notifications = unreadNotifications.Select(n => new GetNotificationDto
                 {
-                    Id =n.Id,
+                    Id = n.Id,
                     Title = n.Title,
                     Message = n.Message
                 }).ToList()
@@ -44,3 +44,4 @@ namespace Application.Features.Queries.Notification
         }
     }
 }
+

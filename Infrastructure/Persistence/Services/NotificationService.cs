@@ -19,14 +19,27 @@ namespace Persistence.Services
         readonly SignalRDbContext _context;
         readonly INotificationHubService _notificationHubService;
         readonly INotificationWriteRepository _notificationWriteRepository;
+        readonly INotificationReadRepository _notificationReadRepository;
         readonly IAESService _aESService;
 
-        public NotificationService(INotificationHubService notificationHubService, INotificationWriteRepository notificationWriteRepository, IAESService aESService, SignalRDbContext context)
+        public NotificationService(INotificationHubService notificationHubService, INotificationWriteRepository notificationWriteRepository, IAESService aESService, SignalRDbContext context, INotificationReadRepository notificationReadRepository)
         {
             _notificationHubService = notificationHubService;
             _notificationWriteRepository = notificationWriteRepository;
             _aESService = aESService;
             _context = context;
+            _notificationReadRepository = notificationReadRepository;
+        }
+
+        public async Task<List<GetNotificationDto>> GetAll()
+        {
+            var notifications = _notificationReadRepository.GetAll().ToList();
+            return notifications.Select(n => new GetNotificationDto
+            {
+                Id = n.Id.ToString(),
+                Title = _aESService.Encrypt(n.Title),
+                Message = _aESService.Encrypt(n.Message),
+            }).ToList();
         }
 
         public async Task<List<GetNotificationDto>> GetUnreadNotifications(List<string> messageIds)

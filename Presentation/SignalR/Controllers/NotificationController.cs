@@ -1,5 +1,6 @@
 ﻿using Application.Features.Commands;
-using Application.Features.Queries.Notification;
+using Application.Features.Queries.Notification.GetAll;
+using Application.Features.Queries.Notification.GetUnreadNotification;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace SignalRApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetUnreadMessages([FromQuery]GetUnreadNotificationQueryRequest? request)
         {
             if (request == null || request.Ids == null || !request.Ids.Any())
@@ -33,6 +34,13 @@ namespace SignalRApi.Controllers
             }
 
             GetUnreadNotificationQueryResponse response = await _mediator.Send(request);
+            return Ok(response);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllNotification()
+        {
+            GetAllNotificationQueryResponse response = await _mediator.Send(new GetAllNotificationQueryRequest());
             return Ok(response);
         }
     }

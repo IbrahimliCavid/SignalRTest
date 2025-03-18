@@ -1,8 +1,8 @@
 ﻿using Application.Dtos;
 
-namespace Application.Features.Queries.Notification
+namespace Application.Features.Queries.Notification.GetAll
 {
-    public class GetUnreadNotificationQueryResponse
+    public class GetAllNotificationQueryResponse
     {
         public int Count { get; set; }
         public List<GetNotificationDto> Notifications { get; set; } = new();
