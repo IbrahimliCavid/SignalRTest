@@ -12,7 +12,7 @@ using Persistence.DbContexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SignalRDbContext))]
-    [Migration("20250315210522_Mig_1")]
+    [Migration("20250318190825_Mig_1")]
     partial class Mig_1
     {
         /// <inheritdoc />
@@ -30,6 +30,9 @@ namespace Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .IsRequired()

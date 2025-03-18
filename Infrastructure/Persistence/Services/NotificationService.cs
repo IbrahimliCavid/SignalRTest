@@ -37,8 +37,8 @@ namespace Persistence.Services
             return notifications.Select(n => new GetNotificationDto
             {
                 Id = n.Id.ToString(),
-                Title = _aESService.Encrypt(n.Title),
-                Message = _aESService.Encrypt(n.Message),
+                Title = n.Title,
+                Message = n.Message,
             }).ToList();
         }
 
@@ -53,8 +53,8 @@ namespace Persistence.Services
             return notifications.Select(n => new GetNotificationDto
             {
                 Id = n.Id.ToString(),
-                Title = _aESService.Encrypt(n.Title),
-                Message = _aESService.Encrypt(n.Message),
+                Title = n.Title,
+                Message = n.Message,
             }).ToList();
 
 
@@ -83,10 +83,15 @@ namespace Persistence.Services
         {
             Notification notification = new()
             {
-                Title = _aESService.Decrypt(notificationDto.Title),
-                Message = _aESService.Decrypt(notificationDto.Message)
+                Title = notificationDto.Title,
+                Message = notificationDto.Message
             };
-            var result = await _notificationWriteRepository.AddAsync(notification);
+
+            var result = await _notificationWriteRepository.AddAsync(new()
+            {
+                Title = _aESService.Encrypt( notificationDto.Title),
+                Message = _aESService.Encrypt(notificationDto.Message)
+            });
 
             await _notificationWriteRepository.SaveAsync();
 
